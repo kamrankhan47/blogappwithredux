@@ -62,12 +62,6 @@ const blogSlice = createSlice({
     name: "blogs",
     initialState:initialState,
     reducers: {
-        addtoFav: (state,action) => {
-            let favorites=[]
-            favorites.push(action.payload)
-            console.log(favorites);
-
-        }
     },
     extraReducers:(builder) => {
         builder.addCase(getAllBlogs.pending, (state, action) => {
@@ -142,4 +136,4 @@ const blogSlice = createSlice({
 }})
 
 export default blogSlice.reducer;
-export const { addtoFav } = blogSlice.actions;
+
