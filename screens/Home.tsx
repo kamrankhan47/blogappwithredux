@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteBlog, getAllBlogs } from '../store/BlogSlice';
+import { addtoFav, deleteBlog, getAllBlogs } from '../store/BlogSlice';
 import { AppDispatch, RootState } from '../store/Store';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
@@ -19,10 +19,16 @@ const Home = ({navigation}:any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { blogs } = useSelector<RootState, any>(state => state);
   // const navigation = useNavigation();
+  const gotoDetail = (id: number) => {
+    navigation.navigate('Details', { id: id })
+}  
 
+const addtoFavorites = (item:any) => {
+ dispatch(addtoFav(item))
+}
   useEffect(() => {
     dispatch(getAllBlogs());
-    console.log(blogs);
+    // console.log(blogs);
   }, []);
 
   useFocusEffect(
@@ -42,7 +48,7 @@ const Home = ({navigation}:any) => {
           data={blogs.data}
           renderItem={({ item }) => {
             return (
-                <TouchableOpacity onPress={()=>navigation.navigate("Details",{item:item})}>
+                <TouchableOpacity onPress={()=>gotoDetail(item.id)}>
                 <View style={{ flexDirection: 'row' }}>
                   <View>
                     <Image source={{ uri: item.avatar }} style={{ width: 100, height: 100 }} />
@@ -54,6 +60,11 @@ const Home = ({navigation}:any) => {
                   <TouchableOpacity onPress={() => deletemyBlog(item)}>
                     <View style={{ marginLeft: 10, backgroundColor: 'purple' }}>
                       <Text style={{ fontSize: 20, color: 'white' }}>Delete</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>addtoFavorites(item)} >
+                    <View style={{ marginLeft: 10, backgroundColor: 'purple' }}>
+                      <Text style={{ fontSize: 20, color: 'white' }}>addtoFav</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
